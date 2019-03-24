@@ -11,7 +11,7 @@ namespace TAGBackEndWebApi
         public int per_page { get; set; } = 0;
         public int total { get; set; } = 0;
         public int total_pages { get; set; } = 0;
-        public IEnumerable <TAGUserModel> data { get; set; }
+        public List <TAGUserModel> data { get; set; }
 
     }
 }

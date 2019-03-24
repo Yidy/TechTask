@@ -16,8 +16,45 @@ namespace TAGBackEndWebApi.Controllers
     {
                 HttpClient client = new HttpClient();
 
-        // GET: api/TAGUser - this end point retrieves data from https://reqres.in based on pageIndex and pageLimit
-        //Integer parameters provided by the front-end user 
+        //Get:  Returns all users with data populated https://reqres.in 
+
+        public async Task<TAGUserResultModel> Get()
+        {
+            int pageLimit = 3;
+            int pageIndex = 1;
+            bool isLastPage = false;
+            TAGUserResultModel userList = new TAGUserResultModel();
+            userList.data = new List<TAGUserModel>();
+
+            //for (int pageIndex = 1; pageIndex <= 5; pageIndex++)
+            while (!isLastPage)
+            {
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri("https://reqres.in");
+                HttpResponseMessage response = await client.GetAsync($"api/user?page={pageIndex}&per_page={pageLimit}");
+                response.EnsureSuccessStatusCode();
+                string userJsonString = await response.Content.ReadAsStringAsync();
+                TAGUserResultModel deserialized = JsonConvert.DeserializeObject<TAGUserResultModel>(userJsonString);
+                if (deserialized.data.Count < 3)
+                    isLastPage = true;
+
+                foreach (TAGUserModel de in deserialized.data)
+                {
+                    userList.data.Add(de);
+                }
+                userList.page = deserialized.page;
+                userList.per_page = deserialized.per_page;
+                userList.total = deserialized.total;
+                userList.total_pages = deserialized.total_pages;
+                pageIndex++;
+            }
+
+
+            return userList;
+        }
+
+        // GET: - this end point retrieves data from https://reqres.in based on pageIndex and pageLimit
+        // Integer parameters provided by the front-end user 
 
         public async Task<TAGUserResultModel> GetTAGUserAsync(int pageIndex, int pageLimit)
         {
@@ -30,17 +67,6 @@ namespace TAGBackEndWebApi.Controllers
             return deserialized;
         }
 
-        //Get:  To be modified to return all users from data repo at https://reqres.in 
-
-        public async Task<TAGUserResultModel> GetAllTAGUsersAsync() 
-        {
-            client.BaseAddress = new Uri("https://reqres.in");
-            HttpResponseMessage response = await client.GetAsync("api/users");
-            response.EnsureSuccessStatusCode();
-            string usersJsonString = await response.Content.ReadAsStringAsync();
-            TAGUserResultModel deserialized = JsonConvert.DeserializeObject<TAGUserResultModel>(usersJsonString);
-            return deserialized;
-        }
 
         // Post: Creat a user and store the info in Json format to the data repo at https://reqres.in    
 
