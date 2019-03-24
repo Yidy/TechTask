@@ -30,9 +30,9 @@ namespace TAGBackEndWebApi.Controllers
             return deserialized;
         }
 
-        // To be modified to return all users  
+        //Get:  To be modified to return all users from data repo at https://reqres.in 
 
-        public async Task<TAGUserResultModel> GetTAGUserAsync() 
+        public async Task<TAGUserResultModel> GetAllTAGUsersAsync() 
         {
             client.BaseAddress = new Uri("https://reqres.in");
             HttpResponseMessage response = await client.GetAsync("api/users");
@@ -42,7 +42,7 @@ namespace TAGBackEndWebApi.Controllers
             return deserialized;
         }
 
-        // To be modified to return all users  
+        // Post: Creat a user and store the info in Json format to the data repo at https://reqres.in    
 
         public async Task<Uri> CreateTAGUserAsync (TAGUserResultModel userAdded)
         {
@@ -54,7 +54,8 @@ namespace TAGBackEndWebApi.Controllers
             return response.Headers.Location;
         }
 
-          public async Task<HttpStatusCode> DeleteTAGUserAsync(string id)
+        //Delete: Delete a user of the given id from the https://reqres.in data repo
+        public async Task<HttpStatusCode> DeleteTAGUserAsync(string id)
         {                // this api end point is set to public only for demo purpose for now
             HttpResponseMessage response = await client.DeleteAsync(
                 $"api/users/{id}");
