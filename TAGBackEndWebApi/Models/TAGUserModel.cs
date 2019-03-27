@@ -8,9 +8,8 @@ namespace TAGBackEndWebApi
     public class TAGUserModel
     {
         public int id { get; set; }
-        public string name { get; set; }
-        public int year { get; set; }
-        public string color { get; set; }
-        public string pantone_value { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public string avatar { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace TAGBackEndWebApi.Controllers
     {
                 HttpClient client = new HttpClient();
 
-        //Get:  Returns all users with data populated https://reqres.in 
+        //Get:api/TAGUser  Returns all users with populated data from https://reqres.in 
 
         public async Task<TAGUserResultModel> Get()
         {
@@ -31,7 +31,7 @@ namespace TAGBackEndWebApi.Controllers
             {
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri("https://reqres.in");
-                HttpResponseMessage response = await client.GetAsync($"api/user?page={pageIndex}&per_page={pageLimit}");
+                HttpResponseMessage response = await client.GetAsync($"api/users?page={pageIndex}&per_page={pageLimit}");
                 response.EnsureSuccessStatusCode();
                 string userJsonString = await response.Content.ReadAsStringAsync();
                 TAGUserResultModel deserialized = JsonConvert.DeserializeObject<TAGUserResultModel>(userJsonString);
@@ -53,13 +53,13 @@ namespace TAGBackEndWebApi.Controllers
             return userList;
         }
 
-        // GET: - this end point retrieves data from https://reqres.in based on pageIndex and pageLimit
+        // GET: api/TAGUser?pageIndex= {PageIndex}&pageLimit={pageLimit}  - this end point retrieves data from https://reqres.in based on pageIndex and pageLimit
         // Integer parameters provided by the front-end user 
 
         public async Task<TAGUserResultModel> GetTAGUserAsync(int pageIndex, int pageLimit)
         {
             client.BaseAddress = new Uri("https://reqres.in");
-            HttpResponseMessage response = await client.GetAsync($"api/user?page={pageIndex}&per_page={pageLimit}");
+            HttpResponseMessage response = await client.GetAsync($"api/users?page={pageIndex}&per_page={pageLimit}");
             response.EnsureSuccessStatusCode();
             string userJsonString = await response.Content.ReadAsStringAsync();
             TAGUserResultModel deserialized = JsonConvert.DeserializeObject<TAGUserResultModel>(userJsonString);
